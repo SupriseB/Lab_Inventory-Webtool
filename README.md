@@ -1,4 +1,4 @@
-# Lab_Inventory-WebtoolLaboratory Inventory Management Webtool
+# Laboratory Inventory Management Webtool
 
 A Django-based web application for laboratories to manage and track inventory items. This project allows users to securely manage categories and items, track quantities, and generate reports.
 
