@@ -1,0 +1,54 @@
+{% extends "inventory/base.html" %}
+{% block content %}
+<h2>Inventory Items</h2>
+
+<!-- Search + Filter + Sort Form -->
+<form method="get" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+  <!-- Search -->
+  <input type="text" name="q" placeholder="Search items..." value="{{ request.GET.q }}">
+  
+  <!-- Category Filter -->
+  <select name="category">
+    <option value="">All Categories</option>
+    {% for category in categories %}
+      <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+        {{ category.name }}
+      </option>
+    {% endfor %}
+  </select>
+  
+  <button type="submit">Apply</button>
+  <a href="{% url 'item-list' %}" style="padding: 4px 8px; border: 1px solid #ccc; text-decoration: none; background: #f4f4f4;">Reset</a>
+</form>
+
+<a href="{% url 'item-create' %}">➕ Add Item</a>
+
+<!-- Items Table -->
+<table border="1" cellpadding="5">
+  <tr>
+    <th><a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}sort=name">Name</a></th>
+    <th>Category</th>
+    <th><a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}sort=quantity">Qty</a></th>
+    <th><a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}sort=purchase_date">Purchase Date</a></th>
+    <th>Location</th>
+    <th>Actions</th>
+  </tr>
+  {% for item in items %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.category.name }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.purchase_date }}</td>
+    <td>{{ item.location }}</td>
+    <td>
+      <a href="{% url 'item-update' item.pk %}">Edit</a> |
+      <a href="{% url 'item-delete' item.pk %}">Delete</a>
+    </td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="6">No items found.</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

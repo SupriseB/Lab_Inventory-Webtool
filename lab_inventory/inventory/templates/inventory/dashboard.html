@@ -1,0 +1,58 @@
+{% extends "inventory/base.html" %}
+{% block content %}
+<h2>📊 Inventory Dashboard</h2>
+
+<!-- Export Buttons -->
+<div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+  <!-- Full Inventory -->
+  <a href="{% url 'export_csv' %}" style="padding: 10px 15px; background: #007bff; color: white; border-radius: 6px; text-decoration: none;">📤 Export All (CSV)</a>
+  <a href="{% url 'export_pdf' %}" style="padding: 10px 15px; background: #dc3545; color: white; border-radius: 6px; text-decoration: none;">📄 Export All (PDF)</a>
+  
+  <!-- Low Stock Only -->
+  <a href="{% url 'export_lowstock_csv' %}" style="padding: 10px 15px; background: #17a2b8; color: white; border-radius: 6px; text-decoration: none;">⚠️ Export Low Stock (CSV)</a>
+  <a href="{% url 'export_lowstock_pdf' %}" style="padding: 10px 15px; background: #fd7e14; color: white; border-radius: 6px; text-decoration: none;">⚠️ Export Low Stock (PDF)</a>
+</div>
+
+<!-- Stats Overview -->
+<div style="display: flex; gap: 20px; margin-bottom: 20px;">
+  <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+    <h3>Total Items</h3>
+    <p>{{ total_items }}</p>
+  </div>
+  <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+    <h3>Total Quantity</h3>
+    <p>{{ total_quantity }}</p>
+  </div>
+  <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background:#ffe5e5;">
+    <h3>Low Stock Alerts</h3>
+    <p>{{ low_stock_count }}</p>
+  </div>
+</div>
+
+<!-- Category Distribution Chart -->
+<h3>Category Distribution</h3>
+<canvas id="categoryChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('categoryChart').getContext('2d');
+  const categoryChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [{% for c in category_summary %}"{{ c.category__name }}",{% endfor %}],
+      datasets: [{
+        label: 'Items per Category',
+        data: [{% for c in category_summary %}{{ c.total }},{% endfor %}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)'
+        ]
+      }]
+    }
+  });
+</script>
+{% endblock %}

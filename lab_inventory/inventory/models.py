@@ -22,3 +22,6 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.quantity})"
+    
+    def is_low_stock(self):
+        return self.quantity <= self.reorder_level

@@ -1,0 +1,16 @@
+{% extends "inventory/base.html" %}
+{% block content %}
+<h2>Categories</h2>
+<a href="{% url 'category-create' %}">➕ Add Category</a>
+<ul>
+  {% for category in categories %}
+    <li>
+      {{ category.name }} - {{ category.description }}
+      [<a href="{% url 'category-update' category.pk %}">Edit</a>]
+      [<a href="{% url 'category-delete' category.pk %}">Delete</a>]
+    </li>
+  {% empty %}
+    <li>No categories yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
