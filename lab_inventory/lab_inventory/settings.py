@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6c-!^bm6^2w6k*t%rwr0bl-mu0-v4w6n1*1+vx3i-q@w(xna#v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -141,19 +142,9 @@ LOGIN_URL = '/users/login/'
 
 #Deployment
 
-import django_heroku
-import dj_database_url
+
 import os
 
-# Database for production
-if os.getenv("DATABASE_URL"):
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
+ALLOWED_HOSTS = ["*"]  # Render will inject hostname
 
-# Static files (CSS, JS, Images)
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-# Activate Django-Heroku
-django_heroku.settings(locals())
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
