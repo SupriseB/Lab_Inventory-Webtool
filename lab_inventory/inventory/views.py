@@ -8,6 +8,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Category, Item
 from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
+from django.db.models import F, Sum, Count
+
 
 # ---------------- Categories ----------------
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -125,7 +127,7 @@ def dashboard(request):
 
     total_items = items.count()
     total_quantity = items.aggregate(Sum('quantity'))['quantity__sum'] or 0
-    low_stock_count = items.filter(quantity__lte=models.F('reorder_level')).count()
+    low_stock_count = items.filter(quantity__lte=F('reorder_level')).count()
     category_summary = (
         items.values('category__name')
              .annotate(total=Count('id'))

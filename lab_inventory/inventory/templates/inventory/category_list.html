@@ -1,16 +1,28 @@
 {% extends "inventory/base.html" %}
 {% block content %}
-<h2>Categories</h2>
-<a href="{% url 'category-create' %}">➕ Add Category</a>
-<ul>
+<h2 style="text-align: center; margin-bottom: 20px;">Categories</h2>
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <a href="{% url 'category-create' %}" 
+     style="padding: 8px 16px; border-radius: 6px; background: #4682b4; color: white; text-decoration: none;">
+     ➕ Add Category
+  </a>
+</div>
+
+<!-- Category Cards -->
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
   {% for category in categories %}
-    <li>
-      {{ category.name }} - {{ category.description }}
-      [<a href="{% url 'category-update' category.pk %}">Edit</a>]
-      [<a href="{% url 'category-delete' category.pk %}">Delete</a>]
-    </li>
+    <div style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; width: 220px; 
+                background: #f0f8ff; text-align: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">
+      <h3 style="margin-top: 0; color: #333;">{{ category.name }}</h3>
+      <p style="color: #555; font-size: 14px;">{{ category.description }}</p>
+      <div style="margin-top: 10px;">
+        <a href="{% url 'category-update' category.pk %}" style="margin-right: 8px; color: #0066cc; text-decoration: none;">✏️ Edit</a>
+        <a href="{% url 'category-delete' category.pk %}" style="color: red; text-decoration: none;">🗑️ Delete</a>
+      </div>
+    </div>
   {% empty %}
-    <li>No categories yet.</li>
+    <p style="text-align: center;">No categories yet.</p>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

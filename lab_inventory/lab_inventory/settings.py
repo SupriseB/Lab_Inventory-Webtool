@@ -56,7 +56,7 @@ ROOT_URLCONF = 'lab_inventory.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':  [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,9 +116,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # outer lab_inventory folder
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "lab_inventory" / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redirect URLs after login/logout
+LOGIN_REDIRECT_URL = '/inventory/dashboard/'     # go to dashboard after login
+# After logout, redirect to home page
+LOGOUT_REDIRECT_URL = 'home'
+
+# Login page URL
+LOGIN_URL = '/users/login/'
+
+
+#Deployment
+
+import django_heroku
+import dj_database_url
+import os
+
+# Database for production
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+
+# Static files (CSS, JS, Images)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Activate Django-Heroku
+django_heroku.settings(locals())

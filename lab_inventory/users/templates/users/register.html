@@ -1,26 +1,27 @@
 {% extends "inventory/base.html" %}
-{% load static %}
 {% block content %}
 <div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
-  <div style="background: #f9f9f9; padding: 30px; border-radius: 12px; width: 350px; 
+  <div style="background: #f9f9f9; padding: 30px; border-radius: 12px; width: 380px; 
               box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Login</h2>
-    
-    <form method="post" style="display: flex; flex-direction: column; gap: 15px;">
+    <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Register</h2>
+
+    <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
       {% csrf_token %}
       {{ form.as_p }}
       
       <button type="submit" 
               style="padding: 10px; background: #4682b4; color: white; border: none; 
                      border-radius: 6px; cursor: pointer; font-size: 16px;">
-        Login
+        Register
       </button>
     </form>
-    
+
     <p style="text-align: center; margin-top: 15px; font-size: 14px;">
-      Don’t have an account? 
-      <a href="{% url 'register' %}" style="color: #4682b4; text-decoration: none;">Register here</a>
+      Already have an account? 
+      <a href="{% url 'login' %}" style="color: #4682b4; text-decoration: none;">Login here</a>
     </p>
   </div>
 </div>
 {% endblock %}
+
+
