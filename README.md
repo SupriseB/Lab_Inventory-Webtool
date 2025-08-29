@@ -31,7 +31,7 @@ Category distribution charts using Chart.js.
 
 Reporting & Export
 
-Export inventory data in CSV format.
+Export inventory data in CSV/PDF format.
 
 # Installation Prerequisites
 
